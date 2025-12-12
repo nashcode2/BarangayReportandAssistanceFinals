@@ -1,86 +1,67 @@
-# Barangay Report and Assistance Mobile Application
+Barangay Report & Assistance System
+Modern Flutter app for residents and barangay admins: submit and track reports, request services, manage certificates, view announcements/events, and run admin operations on the web.
 
-A comprehensive Flutter mobile application for managing barangay reports, emergency assistance, and announcements.
-
-## Features
-
-### User Side
-- **Login/Register**: Email/Phone authentication
-- **Home/Dashboard**: Quick access to all features with personalized stats
-- **Report Issue**: Submit issues with photos, location, and descriptions
-- **My Reports**: View and track submitted reports with real-time status updates
-- **Emergency Assistance**: Quick access to Health, Fire, and Police services
-- **Announcements**: View barangay announcements with images
-- **Resident Reviews**: Write and view reviews with star ratings (1-5 stars)
-- **Events**: View and RSVP to barangay events (Upcoming, Ongoing, All)
-- **Service Requests**: Request and track barangay services (Waste Collection, Street Cleaning, etc.)
-- **AI Chat Assistant**: 24/7 chatbot for help and FAQs
-- **Push Notifications**: Real-time notifications for status changes
-- **Offline Support**: View cached data when offline
-
-### Admin Side
-- **Admin Dashboard**: Overview with statistics and quick links
-- **Report Management**: Manage and update report statuses with filters
-- **Resident Database**: Search and manage resident information
-- **Announcements Management**: Create and manage announcements
-- **Events Management**: Create, edit, and manage barangay events with RSVP tracking
-- **Service Requests Management**: Manage and schedule service requests with status updates
-- **Advanced Analytics**: Visual analytics with pie charts and bar charts
-- **Push Notifications**: Automatic notifications for status changes
-
-## Setup Instructions
-
-1. **Install Flutter**: Ensure Flutter SDK is installed (>=3.0.0)
-
-2. **Firebase Setup**:
-   - Create a Firebase project at https://console.firebase.google.com
-   - Add Android and iOS apps to your Firebase project
-   - Download `google-services.json` (Android) and `GoogleService-Info.plist` (iOS)
-   - Place them in:
-     - `android/app/google-services.json`
-     - `ios/Runner/GoogleService-Info.plist`
-
-3. **Install Dependencies**:
-   ```bash
-   flutter pub get
-   ```
-
-4. **Configure Maps** (for location features):
-   - Get Google Maps API key from https://console.cloud.google.com
-   - Add to `android/app/src/main/AndroidManifest.xml`:
-     ```xml
-     <meta-data
-         android:name="com.google.android.geo.API_KEY"
-         android:value="YOUR_API_KEY"/>
-     ```
-   - Add to `ios/Runner/AppDelegate.swift`:
-     ```swift
-     GMSServices.provideAPIKey("YOUR_API_KEY")
-     ```
-
-5. **Run the App**:
-   ```bash
-   flutter run
-   ```
-
-## Project Structure
-
-```
+✨ Features
+Residents (Mobile/Web): Login/Register, Dashboard stats, Report Issue (photo + location), My Reports tracking, Service Requests, Events & RSVP, Certificates (request/download), Emergency Assistance, Announcements, Reviews, AI Chat Assistant, Offline viewing.
+Admins (Web): Admin Dashboard, Report Management, Certificate Management, Events Management, Service Requests Management, Resident Database, Announcements Management, Analytics/Charts, Push notifications on status updates.
+🛠 Tech Stack
+Flutter (mobile + web), Provider (state management)
+Firebase: Auth, Firestore, Storage, Cloud Messaging, Hosting (web)
+Maps/Location: Google Maps / flutter_map, geolocator, geocoding
+Others: pdf/printing (certificates), fl_chart (analytics), sqflite (offline)
+📦 Prerequisites
+Flutter SDK ≥ 3.0.0
+Firebase project (Auth, Firestore, Storage, FCM)
+Android Studio or VS Code with Flutter extensions
+Google Maps API key (for maps/location features)
+🚀 Setup & Run
+git clone <repo-url>
+cd BARANGAY
+flutter pub get
+Firebase config
+Android: place android/app/google-services.json
+iOS: place ios/Runner/GoogleService-Info.plist
+Web: ensure lib/firebase_options.dart has your web config
+Deploy rules: use firestore.rules and storage.rules in Firebase Console
+Maps API key
+Android: add to android/app/src/main/AndroidManifest.xml
+iOS: add to ios/Runner/AppDelegate.swift
+Run (pick your platform)
+flutter run -d chrome       # Web
+flutter run -d <device-id>  # Android/iOS
+Build installers
+APK: flutter build apk --release
+Web: flutter build web --release (output in build/web)
+👤 Create an Admin Account
+Register/login a user.
+In Firebase Console → Firestore → users collection → open user doc.
+Set isAdmin: true (Boolean). Re-login; admin dashboard will appear.
+📂 Key Structure
 lib/
-├── main.dart
-├── models/          # Data models
-├── screens/         # UI screens
-│   ├── user/       # User-side screens
-│   └── admin/      # Admin-side screens
-├── widgets/         # Reusable widgets
-├── services/        # Backend services
-├── providers/       # State management
-└── utils/           # Utilities and constants
-```
+  main.dart            # App entry, routes, providers
+  screens/             # UI (user + admin)
+  providers/           # State management
+  services/            # Firebase, notifications, location, certificates
+  widgets/             # Reusable UI components
+  utils/               # Constants, themes, helpers
+assets/                # Icons, images
+firestore.rules        # Firestore security rules
+storage.rules          # Storage security rules
+📚 Helpful Docs in Repo
+INSTALLATION_GUIDE.md — Dev & user installation steps
+USER_GUIDE.md — Full user manual
+BUILD_MOBILE_INSTALLER.md — Build/distribute APK
+VIDEO_PRESENTATION_SCRIPT.md — 5–10 min presentation script
+HOW_TO_RUN.md — Detailed run instructions
+ADMIN_WEB_SETUP.md — Admin web notes
+🐛 Troubleshooting
+Run flutter clean && flutter pub get
+Verify Firebase configs are in place
+Check Maps API key is set
+Deploy Firestore/Storage rules
+For web, hard refresh: Ctrl+Shift+R
+🤝 Contributing
+PRs are welcome. Please open an issue to discuss major changes.
 
-## Notes
-
-- Ensure proper permissions are granted for camera, location, and storage
-- Configure push notifications in Firebase Console
-- Update Firebase rules for Firestore and Storage security
-
+📜 License
+MIT License.
