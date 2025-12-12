@@ -1,0 +1,75 @@
+name: barangay_report_assistance
+description: A Flutter application for Barangay Report and Assistance System
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
+
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  firebase_auth_web: ^6.1.0
+  cloud_firestore: ^6.1.0
+  firebase_storage: ^13.0.4
+  firebase_messaging: ^16.0.4
+  cloud_functions: ^6.0.4
+
+  provider: ^6.1.1
+
+  google_maps_flutter: ^2.5.0  # Keep for mobile, but use flutter_map for web
+  flutter_map: ^7.0.2  # Free OpenStreetMap alternative
+  latlong2: ^0.9.1  # Required for flutter_map
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
+
+  image_picker: ^1.0.7
+
+  http: ^1.1.2
+
+  intl: ^0.20.2
+  shared_preferences: ^2.2.2
+  url_launcher: ^6.2.2
+  permission_handler: ^11.1.0
+  flutter_local_notifications: ^19.5.0
+  
+  # Offline support
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  
+  # Charts for analytics
+  fl_chart: ^0.66.0
+  
+  # PDF generation (for certificate features)
+  pdf: ^3.10.7
+  printing: ^5.12.0
+  
+  # QR Code generation for certificates
+  qr_flutter: ^4.1.0
+  
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/images/
+    - assets/icons/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/icons/app_icon.png

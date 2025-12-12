@@ -1,0 +1,128 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Reports collection
+    match /reports/{reportId} {
+      // Allow read if authenticated
+      allow read: if request.auth != null;
+      
+      // Allow create if authenticated and userId matches authenticated user
+      allow create: if request.auth != null && 
+                     request.resource.data.userId == request.auth.uid;
+      
+      // Allow update if user owns the report or is admin
+      allow update: if request.auth != null && 
+                     (resource.data.userId == request.auth.uid || 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true);
+      
+      // Allow delete only for admins
+      allow delete: if request.auth != null && 
+                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Announcements collection
+    match /announcements/{announcementId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Reviews collection
+    match /reviews/{reviewId} {
+      // Allow read if authenticated and review is visible, or user owns it
+      allow read: if request.auth != null && 
+                     (resource.data.isVisible == true || 
+                      resource.data.userId == request.auth.uid);
+      
+      // Allow create if authenticated and userId matches authenticated user
+      allow create: if request.auth != null && 
+                     request.resource.data.userId == request.auth.uid;
+      
+      // Allow update if user owns the review or is admin
+      allow update: if request.auth != null && 
+                     (resource.data.userId == request.auth.uid || 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true);
+      
+      // Allow delete if user owns the review or is admin
+      allow delete: if request.auth != null && 
+                     (resource.data.userId == request.auth.uid || 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true);
+    }
+    
+    // Events collection
+    match /events/{eventId} {
+      // Allow read if authenticated
+      allow read: if request.auth != null;
+      
+      // Allow create if authenticated and is admin
+      allow create: if request.auth != null && 
+                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+      
+      // Allow update if user created the event or is admin
+      allow update: if request.auth != null && 
+                     (resource.data.createdBy == request.auth.uid || 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true);
+      
+      // Allow delete if is admin
+      allow delete: if request.auth != null && 
+                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Service Requests collection
+    match /service_requests/{requestId} {
+      // Allow read if authenticated
+      allow read: if request.auth != null;
+      
+      // Allow create if authenticated and userId matches authenticated user
+      allow create: if request.auth != null && 
+                     request.resource.data.userId == request.auth.uid;
+      
+      // Allow update if user owns the request or is admin
+      allow update: if request.auth != null && 
+                     (resource.data.userId == request.auth.uid || 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true);
+      
+      // Allow delete if user owns the request or is admin
+      allow delete: if request.auth != null && 
+                     (resource.data.userId == request.auth.uid || 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true);
+    }
+    
+    // Certificates collection
+    match /certificates/{certificateId} {
+      // Helper function to check if user is admin
+      function isAdmin() {
+        return request.auth != null && 
+               exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+               get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+      }
+      
+      // Allow read if authenticated
+      // For queries: authenticated users can query (query filters by userId)
+      // For individual reads: user must own it or be admin
+      allow read: if request.auth != null && 
+                     (resource == null || 
+                      resource.data.userId == request.auth.uid || 
+                      isAdmin());
+      
+      // Allow create if authenticated and userId matches authenticated user
+      allow create: if request.auth != null && 
+                     request.resource.data.userId == request.auth.uid &&
+                     (request.resource.data.status == 'pending' || 
+                      !('status' in request.resource.data));
+      
+      // Allow update only for admins
+      allow update: if request.auth != null && isAdmin();
+      
+      // Allow delete only for admins
+      allow delete: if request.auth != null && isAdmin();
+    }
+  }
+}
+

@@ -1,0 +1,18 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Report photos - allow authenticated users to read and write
+    match /report_photos/{reportId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+    
+    // Announcement images - allow read for all authenticated users, write only for admins
+    match /announcement_images/{imageId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                     firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+  }
+}
+

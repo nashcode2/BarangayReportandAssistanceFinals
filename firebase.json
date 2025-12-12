@@ -1,0 +1,31 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "barangayreportandassistance",
+          "appId": "1:323688564933:android:a65977c58f7bd419e348ac",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "barangayreportandassistance",
+          "configurations": {
+            "android": "1:323688564933:android:a65977c58f7bd419e348ac",
+            "ios": "1:323688564933:ios:efb142dd859fca31e348ac",
+            "macos": "1:323688564933:ios:efb142dd859fca31e348ac",
+            "web": "1:323688564933:web:839df9dd85aefb71e348ac",
+            "windows": "1:323688564933:web:cc384d68e8ad1d60e348ac"
+          }
+        }
+      }
+    }
+  }
+}
